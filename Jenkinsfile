@@ -79,20 +79,49 @@ pipeline {
             }
         }
 
+        stage('Deploy Backend') {
+            steps {
+                sh '''
+                    docker stop healthra-backend || true
+                    docker rm healthra-backend || true
+
+                    docker run -d \
+                        --name healthra-backend \
+                        -p 8000:8000 \
+                        healthra-backend:latest
+                '''
+            }
+        }
+
+        stage('Deploy Frontend') {
+            steps {
+                sh '''
+                    docker stop healthra-frontend || true
+                    docker rm healthra-frontend || true
+
+                    docker run -d \
+                        --name healthra-frontend \
+                        -p 5173:80 \
+                        healthra-frontend:latest
+                '''
+            }
+        }
+
     }
 
     post {
 
         success {
-            echo '=========================================='
+            echo '========================================='
             echo 'Pipeline completed successfully.'
-            echo '=========================================='
+            echo 'Application deployed successfully.'
+            echo '========================================='
         }
 
         failure {
-            echo '=========================================='
+            echo '========================================='
             echo 'Pipeline failed.'
-            echo '=========================================='
+            echo '========================================='
         }
 
         always {
