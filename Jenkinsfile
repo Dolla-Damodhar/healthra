@@ -62,6 +62,21 @@ pipeline {
                 }
             }
         }
+        stage('Build Backend Docker Image') {
+    steps {
+        sh '''
+            docker build -t healthra-backend:latest ./backend
+        '''
+    }
+}
+
+stage('Build Frontend Docker Image') {
+    steps {
+        sh '''
+            docker build -t healthra-frontend:latest ./frontend
+        '''
+    }
+}
 
     }
 
