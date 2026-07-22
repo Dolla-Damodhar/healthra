@@ -1,14 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        sonarQube 'SonarScanner'
-    }
-
-    environment {
-        SONAR_SCANNER_HOME = tool 'SonarScanner'
-    }
-
     stages {
 
         stage('Checkout Source Code') {
@@ -73,10 +65,17 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('sonarqube') {
-                    sh """
-                        ${SONAR_SCANNER_HOME}/bin/sonar-scanner
-                    """
+                script {
+
+                    def scannerHome = tool 'SonarScanner'
+
+                    withSonarQubeEnv('sonarqube') {
+
+                        sh """
+                            ${scannerHome}/bin/sonar-scanner
+                        """
+
+                    }
                 }
             }
         }
@@ -85,15 +84,15 @@ pipeline {
     post {
 
         success {
-            echo '========================================='
+            echo '=========================================='
             echo 'Pipeline completed successfully.'
-            echo '========================================='
+            echo '=========================================='
         }
 
         failure {
-            echo '========================================='
+            echo '=========================================='
             echo 'Pipeline failed.'
-            echo '========================================='
+            echo '=========================================='
         }
 
         always {
