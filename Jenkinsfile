@@ -5,26 +5,46 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                echo 'Repository cloned successfully.'
+                checkout scm
             }
         }
 
-        stage('Workspace Information') {
+        stage('Verify Tools') {
             steps {
-                sh 'pwd'
+                sh '''
+                java -version
+                git --version
+                docker --version
+                node -v
+                npm -v
+                python3 --version
+                pip3 --version
+                '''
             }
         }
 
-        stage('Project Structure') {
+        stage('Backend Dependencies') {
             steps {
-                sh 'ls -la'
-                sh 'find . -maxdepth 2'
+                dir('backend') {
+                    sh '''
+                    python3 -m venv venv
+                    . venv/bin/activate
+                    pip install --upgrade pip
+                    pip install -r requirements.txt
+                    python manage.py check
+                    '''
+                }
             }
         }
 
-        stage('Verify Docker') {
+        stage('Frontend Build') {
             steps {
-                sh 'docker --version'
+                dir('frontend') {
+                    sh '''
+                    npm install
+                    npm run build
+                    '''
+                }
             }
         }
 
@@ -33,7 +53,7 @@ pipeline {
     post {
 
         success {
-            echo 'Pipeline executed successfully.'
+            echo 'Backend and Frontend build completed successfully.'
         }
 
         failure {
@@ -41,7 +61,7 @@ pipeline {
         }
 
         always {
-            echo 'Pipeline finished.'
+            cleanWs()
         }
     }
 }
