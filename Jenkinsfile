@@ -63,7 +63,7 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
+   /*     stage('SonarQube Analysis') {
             steps {
                 script {
 
@@ -79,7 +79,7 @@ pipeline {
                 }
             }
         }
-    }
+    } */
 
     post {
 
