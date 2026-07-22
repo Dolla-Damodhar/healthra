@@ -12,25 +12,25 @@ pipeline {
         stage('Verify Build Environment') {
             steps {
                 sh '''
-                    echo "===== Java ====="
+                    echo "====== Java ======"
                     java -version
 
-                    echo "===== Git ====="
+                    echo "====== Git ======"
                     git --version
 
-                    echo "===== Docker ====="
+                    echo "====== Docker ======"
                     docker --version
 
-                    echo "===== Node ====="
+                    echo "====== Node ======"
                     node -v
 
-                    echo "===== NPM ====="
+                    echo "====== NPM ======"
                     npm -v
 
-                    echo "===== Python ====="
+                    echo "====== Python ======"
                     python3 --version
 
-                    echo "===== Pip ====="
+                    echo "====== Pip ======"
                     pip3 --version
                 '''
             }
@@ -63,23 +63,7 @@ pipeline {
             }
         }
 
-   /*     stage('SonarQube Analysis') {
-            steps {
-                script {
-
-                    def scannerHome = tool 'SonarScanner'
-
-                    withSonarQubeEnv('sonarqube') {
-
-                        sh """
-                            ${scannerHome}/bin/sonar-scanner
-                        """
-
-                    }
-                }
-            }
-        }
-    } */
+    }
 
     post {
 
