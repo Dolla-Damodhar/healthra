@@ -68,7 +68,7 @@ class LoginView(APIView):
 
 class LogoutView(APIView):
     """Clears the auth cookies server-side — JS can't do this since they're httpOnly."""
-    permission_classes = [permissions.IsAuthenticated]
+    
 
     def post(self, request):
         response = Response(status=status.HTTP_204_NO_CONTENT)
