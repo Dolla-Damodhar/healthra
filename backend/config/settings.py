@@ -127,7 +127,7 @@ SIMPLE_JWT = {
 # --------------------------------------------------------------------------
 CORS_ALLOWED_ORIGINS = config(
     'CORS_ALLOWED_ORIGINS',
-    default='http://localhost:5173,http://127.0.0.1:5173',
+    default='https://localhost:5173,http://127.0.0.1:5173,https://20.235.179.171' ,
     cast=Csv(),
 )
 # Cookie-based auth requires the browser to send credentials cross-origin
@@ -137,7 +137,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = config(
     'CSRF_TRUSTED_ORIGINS',
-    default='http://localhost:5173,http://127.0.0.1:5173',
+    default='http://localhost:5173,http://127.0.0.1:5173,https://20.235.179.171' ,
     cast=Csv(),
 )
 
