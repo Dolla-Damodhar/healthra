@@ -23,11 +23,13 @@ const authSlice = createSlice({
     signInStateUpdate(state, action: PayloadAction<AuthUser>) {
       state.user = action.payload
       state.isAuthenticated = true
+      state.isLoading = false
       state.error = null
     },
     signOutStateUpdate(state) {
       state.user = null
       state.isAuthenticated = false
+      state.isLoading = false
     },
   },
   extraReducers: (builder) => {

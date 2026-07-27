@@ -26,6 +26,7 @@ import { useNavigate } from 'react-router-dom'
 import doctorImage from '../../assets/doctor image.png'
 import { colors, glassSx } from '../../theme'
 import { useColorMode } from '../../context/ColorModeContext'
+import { useAppSelector } from '../../utils/hooks'
 
 const stats = [
   { icon: GroupsIcon, value: '20K+', label: 'Happy Patients' },
@@ -37,6 +38,9 @@ const stats = [
 export const Hero = () => {
   const { mode } = useColorMode()
   const navigate = useNavigate()
+  const { isAuthenticated, user } = useAppSelector((state) => state.auth)
+  const rawUserName = user?.name?.trim() || user?.email?.split('@')[0] || ''
+  const userName = rawUserName ? `${rawUserName.charAt(0).toUpperCase()}${rawUserName.slice(1)}` : ''
 
   return (
     <Box
@@ -108,7 +112,7 @@ export const Hero = () => {
                 mb: 2,
               }}
             >
-              Your Health,
+              {isAuthenticated && userName ? `Hi ${userName}, Your Health,` : 'Your Health,'}
               <br />
               <Box
                 component="span"
@@ -149,6 +153,7 @@ export const Hero = () => {
                   color: 'text.primary',
                   '&:hover': { borderColor: colors.primary.main, background: 'transparent' },
                 }}
+                onClick={() => navigate('/services')}
               >
                 Explore Services
               </Button>
@@ -252,11 +257,12 @@ export const Hero = () => {
                 sx={{
                   ...glassSx(mode, true),
                   position: 'absolute',
-                  top: { xs: 40, md: 60 },
-                  right: { xs: 0, md: -20 },
+                  top: { xs: 40, md: 95 },
+                  left: { xs: 'auto', md: '58%' },
+                  right: { xs: 0, md: 'auto' },
                   borderRadius: 3,
                   p: 1.8,
-                  minWidth: 200,
+                  minWidth: 210,
                 }}
               >
                 <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
@@ -283,8 +289,9 @@ export const Hero = () => {
                 sx={{
                   ...glassSx(mode, true),
                   position: 'absolute',
-                  bottom: { xs: 90, md: 130 },
-                  right: { xs: -10, md: -30 },
+                  bottom: { xs: 90, md: 120 },
+                  left: { xs: 'auto', md: '63%' },
+                  right: { xs: -10, md: 'auto' },
                   borderRadius: 3,
                   p: 1.6,
                   minWidth: 150,

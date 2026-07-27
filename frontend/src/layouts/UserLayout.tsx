@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import {
   AppBar,
   Box,
@@ -15,7 +15,6 @@ import {
 } from '@mui/material'
 import {
   Menu as MenuIcon,
-  Search as SearchIcon,
   Favorite as FavoriteIcon,
 } from '@mui/icons-material'
 import { navItems, myBookingsNavItem, ActiveTab, SidebarContent } from '../navigations'
@@ -34,7 +33,7 @@ export const UserLayout = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const { isAuthenticated: authenticated, user } = useAppSelector((state) => state.auth)
+  const { isAuthenticated: authenticated } = useAppSelector((state) => state.auth)
 
   useEffect(() => {
     const meta = getPageMeta(location.pathname)
@@ -47,7 +46,9 @@ export const UserLayout = () => {
     navigate('/')
   }
 
-  const visibleNavItems = authenticated ? [...navItems, myBookingsNavItem] : navItems
+  const visibleNavItems = authenticated
+    ? [...navItems.slice(0, 2), myBookingsNavItem, ...navItems.slice(2)]
+    : navItems
 
   return (
     <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -61,7 +62,14 @@ export const UserLayout = () => {
       >
         <Container maxWidth="xl">
           <Toolbar disableGutters sx={{ py: 1.5, justifyContent: 'space-between' }}>
-            <Stack direction="row" alignItems="center" spacing={1.2}>
+            <Stack
+              component={Link}
+              to="/"
+              direction="row"
+              alignItems="center"
+              spacing={1.2}
+              sx={{ color: 'inherit', textDecoration: 'none' }}
+            >
               <Box
                 sx={{
                   width: 42,
@@ -94,27 +102,11 @@ export const UserLayout = () => {
             )}
 
             <Stack direction="row" alignItems="center" spacing={1.5}>
-              {!isMobile && (
-                <IconButton
-                  sx={{
-                    ...glassSx(mode),
-                    width: 42,
-                    height: 42,
-                  }}
-                >
-                  <SearchIcon fontSize="small" />
-                </IconButton>
-              )}
               {!isMobile ? (
                 authenticated ? (
-                  <>
-                    <Typography variant="body2" color="text.secondary">
-                      Hi, {user?.name}
-                    </Typography>
-                    <Button variant="outlined" onClick={handleLogout}>
-                      Log Out
-                    </Button>
-                  </>
+                  <Button variant="outlined" onClick={handleLogout}>
+                    Log Out
+                  </Button>
                 ) : (
                   <Button variant="contained" color="primary" onClick={() => navigate('/login')}>
                     Log In

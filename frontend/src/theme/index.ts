@@ -95,7 +95,7 @@ export const getTheme = (mode: PaletteMode): Theme => {
     },
     typography: {
       fontFamily: [
-        'Inter',
+        'Mulish',
         '-apple-system',
         'BlinkMacSystemFont',
         'Segoe UI',

@@ -39,6 +39,7 @@ export const BookAppointment = () => {
   const navigate = useNavigate()
   const { showSnackbar } = useSnackbar()
   const user = useAppSelector((state) => state.auth.user)
+  const patientName = user?.name?.trim() || user?.email?.split('@')[0] || ''
 
   const formik = useFormik({
     initialValues: {
@@ -46,7 +47,7 @@ export const BookAppointment = () => {
       doctor: '',
       date: '',
       timeSlot: '',
-      patientName: user?.name ?? '',
+      patientName,
       patientPhone: '',
       patientEmail: user?.email ?? '',
       reason: '',

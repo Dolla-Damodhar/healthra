@@ -13,8 +13,10 @@ type SidebarContentProps = {
 export const SidebarContent = ({ onNavigate }: SidebarContentProps) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const { isAuthenticated: authenticated, user } = useAppSelector((state) => state.auth)
-  const visibleNavItems = authenticated ? [...navItems, myBookingsNavItem] : navItems
+  const { isAuthenticated: authenticated } = useAppSelector((state) => state.auth)
+  const visibleNavItems = authenticated
+    ? [...navItems.slice(0, 2), myBookingsNavItem, ...navItems.slice(2)]
+    : navItems
 
   const goTo = (path: string) => {
     navigate(path)
@@ -62,14 +64,9 @@ export const SidebarContent = ({ onNavigate }: SidebarContentProps) => {
       <Divider sx={{ my: 3 }} />
       <Stack spacing={1.5}>
         {authenticated ? (
-          <>
-            <Typography variant="body2" color="text.secondary">
-              Hi, {user?.name}
-            </Typography>
-            <Button variant="outlined" fullWidth onClick={handleLogout}>
-              Log Out
-            </Button>
-          </>
+          <Button variant="outlined" fullWidth onClick={handleLogout}>
+            Log Out
+          </Button>
         ) : (
           <Button variant="contained" fullWidth onClick={() => goTo('/login')}>
             Log In
