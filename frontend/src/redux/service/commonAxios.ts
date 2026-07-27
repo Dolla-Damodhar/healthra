@@ -11,7 +11,7 @@ const CSRF_METHODS = ['post', 'put', 'patch', 'delete']
 // so there's no token to attach here — withCredentials is what makes the
 // browser send/receive those cookies at all.
 const HealthraApi = axios.create({
-  baseURL: envConfig().healthraBaseUrl,
+  baseURL: '${window.location.origin}/api/',
   timeout: 30000,
   withCredentials: true,
 })
